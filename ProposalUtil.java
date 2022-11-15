@@ -1,4 +1,4 @@
-package com.sudytech.apps.thefacultysystem.util;
+package com.step.esms.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -33,7 +33,7 @@ import com.sudytech.util.base.StringUtil;
 
 /**
  * 工具类
- * 
+ *
  * @author ccj
  */
 public class ProposalUtil {
@@ -42,7 +42,7 @@ public class ProposalUtil {
 
 	/**
 	 * 附件下载
-	 * 
+	 *
 	 * @param list
 	 *            文件信息集合
 	 */
@@ -154,7 +154,7 @@ public class ProposalUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param toSavePath
 	 *            要保存的附件json串
 	 * @param savedPath
@@ -268,7 +268,7 @@ public class ProposalUtil {
 		dbSession.execNonQuery(updateSql.toString(), updateParams.toArray());
 		/** 修改附件表附件状态 end **/
 	}
-	
+
 	/**
     *
     * 创建Excel
@@ -301,7 +301,7 @@ public class ProposalUtil {
            }
            for (int i = 0; i < list.size(); i++) {
                HSSFRow dataRow = sheet.createRow(i + 1);
-             
+
                for (int j = 0; j < keyList.size()+1; j++) {
             	   HSSFCell cell = dataRow.createCell(j);
                    cell.setCellStyle(style);
@@ -325,7 +325,7 @@ public class ProposalUtil {
        } catch (Exception e) {
     	   _log.error("创建Excel出错!", e);
     	   throw new RuntimeException(e);
-       } 
+       }
    }
 
 	/**
@@ -356,7 +356,7 @@ public class ProposalUtil {
 
 		/**
 		 * 文件名称
-		 * 
+		 *
 		 * @return the fileName
 		 */
 		public String getFileName() {
@@ -373,7 +373,7 @@ public class ProposalUtil {
 
 		/**
 		 * 文件唯一标识Key，用于查找文件
-		 * 
+		 *
 		 * @return the fileKey
 		 */
 		public String getFileKey() {

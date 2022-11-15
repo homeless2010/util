@@ -1,15 +1,11 @@
 package com.step.esms.util;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.qrcode.QrCodeUtil;
-import cn.hutool.extra.qrcode.QrConfig;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.step.esms.controller.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -40,9 +36,12 @@ public class QrcodeUtil2 {
     private static final String FORMAT_NAME = "JPG";
     private static final String TITLE = "微信扫码查看救援进度";
 
-    private static final String CONTENT = "十分士大夫发";
-    private static final String FOOTER = "儿童热帖热帖";
-    private static final String IMG_LOGO = "E:\\qrLogo.png";
+    private static final String CONTENT = "...";
+
+    private static final String FOOTER = "";
+    private static final String IMG_LOGO = "D:\\qrLogo.png";
+    private static final int LOGO_WIDTH = 105;
+    private static final int LOGO_HEIGHT = 105;
 
     public void test() {
         // 头部文字区域高度
@@ -71,15 +70,10 @@ public class QrcodeUtil2 {
         titleRight.setFont(titleFont);
         titleRight.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         // 居中 x开始的位置：（图片宽度-字体大小*字的个数）/2
-        int x = (IMAGE_WIDTH - (titleFont.getSize() * TITLE.length())) / 2;
+        int x = (IMAGE_WIDTH - titleRight.getFontMetrics().stringWidth(TITLE)) / 2;
         titleRight.drawString(TITLE, x, (titleHeight) / 2 + 15);
         height += titleHeight;
 
-        //**********************中间文字部分*********
-//        Graphics2D centerWord = image.createGraphics();
-//        // 设置字体颜色，先设置颜色，再填充内容
-//        centerWord.setColor(Color.black);
-//        titleRight.dispose();
         //***************插入二维码图片***********************************************
         Graphics codePic = image.getGraphics();
         BufferedImage codeImg;
@@ -96,7 +90,7 @@ public class QrcodeUtil2 {
         // 1.3设置外边距;(即白色区域)
         hints.put(EncodeHintType.MARGIN, 1);
         try {
-            BitMatrix bitMatrix = new MultiFormatWriter().encode("ssssssssssss", BarcodeFormat.QR_CODE, 360, 360, hints);
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(CONTENT, BarcodeFormat.QR_CODE, QR_CODE_WIDTH, QR_CODE_HEIGHT, hints);
             codeImg = toImage(bitMatrix, Color.black.getRGB(), Color.white.getRGB());
         } catch (WriterException e) {
             throw new RuntimeException(e);
@@ -110,19 +104,19 @@ public class QrcodeUtil2 {
         if (StrUtil.isNotBlank(IMG_LOGO)) {
             try {
                 Image src = ImageIO.read(new File(IMG_LOGO));
-                Image imageLogo = src.getScaledInstance(105, 105,
-                        Image.SCALE_SMOOTH);
-                BufferedImage tag = new BufferedImage(105, 105,
-                        BufferedImage.TYPE_INT_RGB);
+                Image imageLogo = src.getScaledInstance(LOGO_WIDTH, LOGO_HEIGHT, Image.SCALE_SMOOTH);
+                BufferedImage tag = new BufferedImage(LOGO_WIDTH, LOGO_HEIGHT, BufferedImage.TYPE_INT_RGB);
                 Graphics g = tag.getGraphics();
                 g.drawImage(imageLogo, 0, 0, null); // 绘制缩小后的图
                 g.dispose();
                 src = imageLogo;
                 Graphics2D graph = codeImg.createGraphics();
-                int x1 = (360 - 105) / 2;
-                int y1 = (360 - 105) / 2;
-                graph.drawImage(src, x1, y1, 105, 105, null);
-                Shape shape = new RoundRectangle2D.Float(x1, y1, 105, 105, 6, 6);
+                int x1 = (QR_CODE_WIDTH - LOGO_WIDTH) / 2;
+                int y1 = (QR_CODE_HEIGHT - LOGO_HEIGHT) / 2;
+//                graph.setColor(Color.WHITE);
+                graph.fillRect(x1, y1, LOGO_WIDTH, LOGO_HEIGHT);
+                graph.drawImage(src, x1, y1, LOGO_WIDTH, LOGO_HEIGHT, null);
+                Shape shape = new RoundRectangle2D.Float(x1, y1, LOGO_WIDTH, LOGO_HEIGHT, 6, 6);
                 graph.setStroke(new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
                 graph.draw(shape);
                 graph.dispose();
@@ -148,21 +142,8 @@ public class QrcodeUtil2 {
         codePic.drawImage(codeImg, (IMAGE_WIDTH - QR_CODE_WIDTH) / 2, height, QR_CODE_WIDTH, QR_CODE_HEIGHT, null);
         codePic.dispose();
 
-
-        //***************插入标志图片***********************************************
-//        Graphics signPic = image.getGraphics();
-//        BufferedImage signImg = null;
-//        try {
-//            signImg = ImageIO.read(new java.io.File(imgSign));
-//        } catch (Exception e) {
-//        }
-//
-//        if (signImg != null) {
-//            signPic.drawImage(signImg, 0, 130, QR_CODE_WIDTH, QR_CODE_HEIGHT, null);
-//            signPic.dispose();
-//        }
         try {
-            ImageIO.write(image, "png", new File("E://qrcode.png"));
+            ImageIO.write(image, "png", new File("D://qrcode.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
