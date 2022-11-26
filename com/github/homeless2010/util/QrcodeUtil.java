@@ -1,4 +1,4 @@
-package com.step.esms.util;
+package com.step.esms.util.com.github.homeless2010.util;
 
 import com.google.common.collect.Maps;
 import com.google.zxing.BarcodeFormat;
@@ -7,8 +7,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.step.esms.util.qrcode.MatrixToImageWriter;
-import com.step.esms.util.qrcode.MatrixToLogoImageConfig;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 

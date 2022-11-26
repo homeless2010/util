@@ -1,4 +1,4 @@
-package com.step.esms.util;
+package com.step.esms.util.com.github.homeless2010.util;
 
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
